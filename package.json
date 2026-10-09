@@ -1,0 +1,12 @@
+{
+  "name": "boeing-737-flight-sim",
+  "version": "1.1.0",
+  "description": "Realistic Boeing 737 passenger aircraft 6DOF flight simulator with Three.js",
+  "private": true,
+  "scripts": {
+    "start": "npx serve -s . -l 3000",
+    "dev": "npx serve -s ."
+  },
+  "keywords": ["flight-simulator", "three.js", "boeing-737", "6dof"],
+  "license": "MIT"
+}

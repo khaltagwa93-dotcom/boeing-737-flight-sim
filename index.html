@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محاكاة قيادة طائرة ركاب - Boeing 737 | Realistic Flight Sim</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #000; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    #canvas-container { width: 100vw; height: 100vh; }
+    canvas { display: block; }
+    #hud {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; color: #0f0; font-family: 'Courier New', monospace;
+      text-shadow: 0 0 4px #000;
+    }
+    .instrument {
+      position: absolute; background: rgba(0,20,0,0.7); border: 1px solid #0f0;
+      border-radius: 4px; padding: 6px 10px; font-size: 14px; min-width: 120px;
+    }
+    #airspeed { top: 20px; left: 20px; }
+    #altitude { top: 20px; right: 20px; }
+    #heading { top: 20px; left: 50%; transform: translateX(-50%); }
+    #vsi { bottom: 120px; left: 20px; }
+    #throttle-ind { bottom: 120px; right: 20px; }
+    #attitude { bottom: 20px; left: 50%; transform: translateX(-50%); width: 180px; text-align: center; }
+    #status { top: 80px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 13px; }
+    #controls-help {
+      position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.75);
+      color: #ccc; padding: 12px; border-radius: 6px; font-size: 12px; max-width: 260px;
+      pointer-events: none; line-height: 1.5;
+    }
+    #controls-help h4 { color: #0f0; margin-bottom: 6px; }
+    #loading {
+      position: absolute; inset: 0; background: #001a00; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; color: #0f0; z-index: 100;
+    }
+    #loading h1 { font-size: 28px; margin-bottom: 20px; }
+    .spinner { width: 40px; height: 40px; border: 3px solid #0f0; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #stall-warning { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: rgba(180,0,0,0.85); color: #fff; padding: 12px 24px; font-size: 22px; font-weight: bold;
+      border: 2px solid #f00; animation: blink 0.4s infinite; }
+    @keyframes blink { 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <h1>محاكاة طائرة ركاب Boeing 737</h1>
+    <div class="spinner"></div>
+    <p style="margin-top:16px">جاري تحميل محرك الفيزياء والرسومات...</p>
+  </div>
+  <div id="canvas-container"></div>
+  <div id="hud">
+    <div id="airspeed" class="instrument">السرعة: <span id="spd">0</span> kt</div>
+    <div id="altitude" class="instrument">الارتفاع: <span id="alt">0</span> ft</div>
+    <div id="heading" class="instrument">الاتجاه: <span id="hdg">0</span>°</div>
+    <div id="vsi" class="instrument">معدل الصعود: <span id="vs">0</span> fpm</div>
+    <div id="throttle-ind" class="instrument">الدفع: <span id="thr">0</span>%</div>
+    <div id="attitude" class="instrument">
+      Pitch: <span id="pitch">0</span>° | Bank: <span id="bank">0</span>°
+    </div>
+    <div id="status">اضغط SPACE لبدء المحركات | WASD + QE للتحكم</div>
+    <div id="stall-warning">⚠ STALL WARNING ⚠</div>
+  </div>
+  <div id="controls-help">
+    <h4>التحكم</h4>
+    W/S : Pitch (رفع/خفض الأنف)<br>
+    A/D : Roll (ميلان)<br>
+    Q/E : Yaw (اتجاه)<br>
+    Shift / Ctrl : زيادة/تقليل الدفع<br>
+    Space : تشغيل/إيقاف المحركات<br>
+    C : تبديل الكاميرا (قمرة / خارجي)<br>
+    R : إعادة التعيين
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
